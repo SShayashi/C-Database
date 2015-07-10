@@ -1,0 +1,8 @@
+gcc -g -c file.c
+gcc -g -c datadef.c
+gcc -g -c datamanip.c
+
+gcc -g -c test-datamanip.c
+
+gcc -g -o test test-datamanip.o file.o datadef.o datamanip.o -lreadline -lcurses
+./test

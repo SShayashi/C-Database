@@ -1,0 +1,17 @@
+main: main.o datadef.o file.o datamanip.o
+	$(CC) -o  main $(CFLAGS) main.o file.o datadef.o datamanip.o -lreadline -lcurses
+
+datadef.o:datadef.c
+	cc -c datadef.c
+
+datamanip.o:datamanip.c
+	cc -c datamanip.c 
+
+file.o:file.c
+	cc -c file.c
+test-datamanip.o:test-datamanip.c
+	cc -c test-datamanip.c
+
+main.o:main.c
+	cc -c main.c
+	
