@@ -46,6 +46,7 @@ static Buffer *bufferListHead = NULL;
  */
 static Buffer *bufferListTail = NULL;
 
+/*git テスト*/
 /*
  * initializeBufferList -- バッファリストの初期化
  *
@@ -115,7 +116,7 @@ static Result initializeBufferList()
  *	buf: リストの先頭に移動させるバッファへのポインタ
  *
  * 返り値:
- *	なし
+ *	なしです
  */
 static void moveBufferToListHead(Buffer *buf)
 {
