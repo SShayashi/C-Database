@@ -46,7 +46,6 @@ static Buffer *bufferListHead = NULL;
  */
 static Buffer *bufferListTail = NULL;
 
-/*git テスト*/
 /*
  * initializeBufferList -- バッファリストの初期化
  *
