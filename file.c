@@ -346,7 +346,7 @@ Result readPage(File *file, int pageNum, char *page)
    *バッファの内容が変更されているので、その内容をlseekとwriteでファイルに書き戻す。
    */
   if( emptyBuf -> modified == MODIFIED){
-    if (lseek(emptyBuf -> file -> desc,PAGE_SIZE*pageNum, SEEK_SET) == -1) {
+    if (lseek(emptyBuf -> file -> desc,PAGE_SIZE*emptyBuf ->pageNum, SEEK_SET) == -1) {
       return NG;
     }
     if (write(emptyBuf -> file -> desc, page, PAGE_SIZE ) == -1) {
@@ -450,10 +450,10 @@ Result writePage(File *file, int pageNum, char *page)
    *バッファの内容が変更されているので、その内容をlseekとwriteでファイルに書き戻してから書き直す
    */
   if( emptyBuf -> modified == MODIFIED){
-    if (lseek(emptyBuf -> file -> desc,PAGE_SIZE*pageNum, SEEK_SET) == -1) {
+    if (lseek(emptyBuf -> file -> desc,PAGE_SIZE*emptyBuf -> pageNum, SEEK_SET) == -1) {
       return NG;
     }
-    if (write(emptyBuf -> file -> desc, page, PAGE_SIZE ) == -1) {
+    if (write(emptyBuf -> file -> desc, emptyBuf -> page, PAGE_SIZE ) == -1) {
       return NG;   
     }
     /* 変更フラグを0に戻す */
