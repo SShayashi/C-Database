@@ -170,6 +170,8 @@ extern void printTableFence(int);
 /* データのString判定をする関数　（バグありTODO）*/
 extern Result checkTokenString(char *);
 
+/* バッファリングテスト用関数  */
+extern void printBufferList();
 
 
 
