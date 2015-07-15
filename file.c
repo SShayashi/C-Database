@@ -309,6 +309,7 @@ Result readPage(File *file, int pageNum, char *page)
 {
 	
   Buffer *buf,*emptyBuf;
+  emptyBuf = NULL;
   /*
    * 読み出しを要求されたページがバッファに保存されているかどうか、
    * リストの先頭から順に探す
@@ -337,7 +338,7 @@ Result readPage(File *file, int pageNum, char *page)
   }
 	
   /*空きが見つからなかったら、バッファリストの一番最後のバッファを空ける。*/
-  if( emptyBuf == NULL){
+  if( emptyBuf  == NULL){
     emptyBuf = bufferListTail;
   }
     
