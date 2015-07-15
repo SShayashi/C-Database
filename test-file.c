@@ -171,6 +171,8 @@ Result test3()
 	    exit(1);
 	}
 
+    
+
 	/* 書き込んだものと同じものが読み出せたかどうかチェックする */
 	if (memcmp(pagePattern[pageNum], page, PAGE_SIZE) == 0) {
 	    printf("  File %2d, Page %2d: OK\n", fileNum, pageNum);
