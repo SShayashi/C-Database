@@ -492,3 +492,25 @@ int getNumPages(char *filename)
   }
   return (stbuf.st_size/PAGE_SIZE);
 }
+
+/*
+ * printBufferList -- バッファのリストの内容の出力(テスト用)
+ */
+void printBufferList()
+{
+    Buffer *buf;
+
+    printf("Buffer List:");
+
+    /* それぞれのバッファの最初の3バイトだけ出力する */
+    for (buf = bufferListHead; buf != NULL; buf = buf->next) {
+  if (buf->file == NULL) {
+      printf("(empty) ");
+  } else {
+      printf("    %c%c%c ", buf->page[0], buf->page[1], buf->page[2]);
+  }
+    }
+
+    printf("\n");
+}
+
