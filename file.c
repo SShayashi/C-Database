@@ -400,6 +400,22 @@ Result writePage(File *file, int pageNum, char *page)
 {
   Buffer *buf,*emptyBuf;
 
+  /* バッファの先頭が空の時はバッファが空とみなして、先頭にデータを入れて終了 */
+  if( bufferListHead -> file == NULL){
+    emptyBuf = bufferListHead;
+    /* Buffer構造体(emptyBuf)への各種情報の設定 */
+    emptyBuf -> file = file;
+    emptyBuf -> pageNum = pageNum;
+    emptyBuf -> modified = MODIFIED;
+    /* emptyBufに引数のpageを書き込む*/
+    memcpy(emptyBuf -> page , page , PAGE_SIZE);
+
+    bufferListHead = emptyBuf;
+    /* アクセスされたバッファ(emptyBuf)を、リストの先頭に移動させる */
+    moveBufferToListHead(emptyBuf);
+
+    return OK;
+  }
   /*
    * 書き出しを要求されたページがバッファに保存されているかどうか、
    * リストの先頭から順に探す
@@ -447,6 +463,7 @@ Result writePage(File *file, int pageNum, char *page)
   /* Buffer構造体(emptyBuf)への各種情報の設定 */
   emptyBuf -> file = file;
   emptyBuf -> pageNum = pageNum;
+  emptyBuf -> modified = MODIFIED;
   /* emptyBufに引数のpageを書き込む*/
   memcpy(emptyBuf -> page , page , PAGE_SIZE);
 
