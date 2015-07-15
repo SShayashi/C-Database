@@ -164,12 +164,10 @@ extern Result createDataFile(char *);
 extern Result deleteDataFile(char *);
 extern void printRecordSet(RecordSet *);
 extern void printTableData(char *);
-/*勝手に作った*/
+/* データを表にして表示する関数 */
 extern void printTableFence(int);
 
-/*
- * main.cにある関数(勝手に作った)
- */
+/* データのString判定をする関数　（バグありTODO）*/
 extern Result checkTokenString(char *);
 
 

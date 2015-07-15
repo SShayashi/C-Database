@@ -57,10 +57,9 @@ Result finalizeDataManipModule()
  */
 static int getRecordSize(TableInfo *tableInfo)
 {
-    int i;
     int total = 0;
 
-    for (i = 0 ; i < tableInfo -> numField ; i ++) {//フィールド数分だけループする
+    for (int i = 0 ; i < tableInfo -> numField ; i ++) {//フィールド数分だけループする
         /* i番目のフィールドがINT型かSTRING型か調べる */
 
         /* INT型ならtotalにsizeof(int)を加算 */
@@ -92,7 +91,6 @@ static int getRecordSize(TableInfo *tableInfo)
 Result insertRecord(char *tableName, RecordData *recordData)
 {
     TableInfo *tableInfo;
-    int i,j;
     int recordSize;
     int numPage;
     char *record;
@@ -126,7 +124,7 @@ Result insertRecord(char *tableName, RecordData *recordData)
     p += 1;
 
     /* 確保したメモリ領域に、フィールド数分だけ、順次データを埋め込む */
-    for (i = 0; i < tableInfo->numField; i++) {
+    for (int i = 0; i < tableInfo->numField; i++) {
     	switch (tableInfo->fieldInfo[i].dataType) {
     	case TYPE_INTEGER:
             memcpy(p, &(recordData-> fieldData[i].intValue) , sizeof(int));
@@ -167,19 +165,20 @@ Result insertRecord(char *tableName, RecordData *recordData)
     /* データファイルのページ数を調べる */
     numPage = getNumPages(filename);
 
+
     /* PAGE_SIZEバイト分の大きさを持つ配列pageを初期化する */
     memset(page, 0, PAGE_SIZE);
     
 
     /* レコードを挿入できる場所を探す */
-    for ( i = 0; i < numPage; i++) {
+    for (int i = 0; i < numPage; i++) {
         /* 1ページ分のデータを読み込む */
         if (readPage(file, i, page) != OK) {
             free(record);
 	    return NG;
 	   }
         /* pageの先頭からrecordSizeバイトずつ飛びながら、先頭のフラグが「0」(未使用)の場所を探す */
-        for ( j = 0; j < (PAGE_SIZE / recordSize); j++) {
+        for (int j = 0; j < (PAGE_SIZE / recordSize); j++) {
     	    char *q;
             q = page; 
     	    q = q + recordSize*j;
@@ -242,14 +241,13 @@ Result insertRecord(char *tableName, RecordData *recordData)
  */
 static Result checkCondition(RecordData *recordData, Condition *condition)
 {
-    int i;
     /*条件式が存在せず、全てのレコード表示の場合*/
     if(condition -> allmach == 1 ){
         return OK;
     }
 
      /* 条件conditionに指定されているフィールド名をrecordから探す */
-    for ( i = 0; i < recordData->numField ; i++) {
+    for (int i = 0; i < recordData->numField ; i++) {
         /* フィールド名が同じかどうかチェック */
         if (strcmp(recordData -> fieldData[i].name, condition->name) == 0) {
 
@@ -345,7 +343,6 @@ static Result checkCondition(RecordData *recordData, Condition *condition)
  */
 RecordSet *selectRecord(char *tableName, Condition *condition)
 {
-    int i,j,k;
      RecordSet *recordSet; 
      RecordData *recordData; 
      File *file;
@@ -378,9 +375,11 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
         return NULL;
     }
 
+
+
     /*ページ数の取得*/
     numPage = getNumPages(filename);
-    
+
 
     /*テーブル情報の取得*/
     tableInfo = getTableInfo(tableName);
@@ -389,9 +388,19 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
     recordSize = getRecordSize(tableInfo);
 
     
+    /* データが挿入されていない時はそのままrecordSetを返す */
+    if ( numPage == 0){
+
+        freeTableInfo(tableInfo);
+        if((closeFile(file)) != OK){
+            return NULL;
+        }
+    return recordSet;
+
+    }
 
     /*ページ数の数だけループする*/
-    for( i = 0 ; i  < numPage ; i ++ ){
+    for(int i = 0 ; i  < numPage ; i ++ ){
 
         
         /*1ページ分読み込む*/
@@ -402,7 +411,7 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
 
         /*pageの戦闘からrecord_sizeバイトずつ切り取って処理する*/
         
-        for (  j = 0 ; j < (PAGE_SIZE/recordSize) ; j++ ){
+        for ( int j = 0 ; j < (PAGE_SIZE/recordSize) ; j++ ){
             char *p;
             p = page + recordSize * j; 
             
@@ -420,7 +429,7 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
                 recordData -> next = NULL;
                 
                 /* フィールド数分だけループして、データ型ごとに読み込んで構造体を作る*/
-                for( k = 0 ; k  < (tableInfo -> numField) ; k++){
+                for(int k = 0 ; k  < (tableInfo -> numField) ; k++){
                     /*フィールド情報*/
                     strcpy(recordData -> fieldData[k].name ,tableInfo -> fieldInfo[k].name);
                     recordData -> fieldData[k].dataType = tableInfo -> fieldInfo[k].dataType;
@@ -466,7 +475,7 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
             }
         }
     }
-
+    
     freeTableInfo(tableInfo);
     if((closeFile(file)) != OK){
         return NULL;
@@ -524,7 +533,7 @@ Result deleteRecord(char *tableName, Condition *condition)
     char *filename;
     char page[PAGE_SIZE];
     int recordSize;
-    int len, i, j, k;
+    int len;
 
 
     /* [tableName].datという文字列を作る */   
@@ -550,13 +559,13 @@ Result deleteRecord(char *tableName, Condition *condition)
 
 
     /* レコードを1つずつ取りだし、条件を満足するかどうかチェックする */
-    for (i = 0; i < numPage; i++) {
+    for (int i = 0; i < numPage; i++) {
         /* 1ページ分のデータを読み込む */
         if (readPage(file, i, page) != OK) {
             /* エラー処理 */
         }
         /* pageの先頭からrecord_sizeバイトずつ切り取って処理する */
-        for ( j = 0; j < (PAGE_SIZE / recordSize); j++) {
+        for (int j = 0; j < (PAGE_SIZE / recordSize); j++) {
             RecordData *recordData;
                 char *p;
 
@@ -578,7 +587,7 @@ Result deleteRecord(char *tableName, Condition *condition)
              /*１レコード分のデータを、RecordData構造体に入れる*/
                 recordData -> numField = tableInfo -> numField;
                 recordData -> next = NULL;
-            for ( k = 0; k < tableInfo->numField; k++) {
+            for (int k = 0; k < tableInfo->numField; k++) {
                 /* TableInfo構造体からRecordData構造体にフィールド名とデータ型の情報をコピーする */
                 /*フィールド情報*/
                     strcpy(recordData -> fieldData[k].name ,tableInfo -> fieldInfo[k].name);
@@ -684,6 +693,12 @@ Result deleteDataFile(char *tableName)
  */
 void printRecordSet(RecordSet *recordSet)
 {
+    /*レコードデータが一つも挿入されてないとき*/
+    if(recordSet -> numRecord == 0){
+        printf("データがありません");
+        return ;
+    }
+
     RecordData *record;
     int i,sub;
     char fieldStr[MAX_STRING];// |Field  |Field  となっている部分

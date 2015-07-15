@@ -216,7 +216,7 @@ TableInfo *getTableInfo(char *tableName)
     }
 
     /* PAGE_SIZEバイト分だけファイルから読み取ってページ数分だけループ */
-    for (i = 0 ; i < getNumPages(filename) ; i++ ){    
+    for (int i = 0 ; i < getNumPages(filename) ; i++ ){    
 
         readPage(file, i, page);
         p = page;
