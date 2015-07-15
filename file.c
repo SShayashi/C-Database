@@ -400,7 +400,7 @@ Result readPage(File *file, int pageNum, char *page)
 Result writePage(File *file, int pageNum, char *page)
 {
   Buffer *buf,*emptyBuf;
-
+  emptyBuf = NULL;
   /* バッファの先頭が空の時はバッファが空とみなして、先頭にデータを入れて終了 */
   if( bufferListHead -> file == NULL){
     emptyBuf = bufferListHead;
