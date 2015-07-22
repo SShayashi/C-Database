@@ -491,7 +491,7 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
 
                     }else{
                         /* 末尾にデータを追加 */ 
-                        recordSet ->tail -> next = recordData;
+                        recordSet -> tail -> next = recordData;
                         /* 追加したデータを末尾に登録 */
                         recordSet -> tail = recordData;       
                     }
