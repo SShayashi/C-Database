@@ -489,13 +489,14 @@ void callSelectRecord()
     token = getNextToken();
 
     /* selectの次のトークンを読み込み、それがdistinctかどうかをチェック */
-    if( token == strcmp(token, "distinct")){
+    if( strcmp(token, "distinct") ==  0){
     	/* distinctがあればDISTINCTフラグを立てておく */
-    	cond -> distinctFlag = DISTINCT ;
+    	cond.distinct = DISTINCT;
     	token = getNextToken();
     }
+
     /* distinctがなければNOT_DISTINCTにしておく */
-    cond -> distinctFlag = NOT_DISTINCT;
+    cond.distinct = NOT_DISTINCT;
 
     if (token == NULL || strcmp(token, "*") != 0) {
 	/* 文法エラー */

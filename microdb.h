@@ -139,6 +139,11 @@ enum OperatorType {
 };
 
 /*
+ * distinctFlag -- 重複除去フラグ
+ */
+typedef enum { NOT_DISTINCT = 0, DISTINCT = 1 } distinctFlag;
+
+/*
  * Condition -- 検索や削除の条件式を表現する構造体
  */
 typedef struct Condition Condition;
@@ -173,11 +178,6 @@ extern Result checkTokenString(char *);
 
 /* バッファリングテスト用関数  */
 extern void printBufferList();
-
-/*
- * distinctFlag -- 重複除去フラグ
- */
-typedef enum { NOT_DISTINCT = 0, DISTINCT = 1 } distinctFlag;
 
 
 

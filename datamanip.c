@@ -13,6 +13,12 @@
 #define DATA_FILE_EXT ".dat"
 
 /*
+ * addFlag -- データ追加フラグ
+ * このフラグが立っているレコードデータのみ追加する    
+ */
+typedef enum { NOT_ADD = 0, ADD = 1 } AddFlag;
+
+/*
  * initializeDataManipModule -- データ操作モジュールの初期化
  *
  * 引数:
@@ -454,24 +460,44 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
                 /*条件に合ったレコードを挿入する*/
                 if( checkCondition(recordData , condition) == OK)
                 {
-                    
                     RecordData *r;
-                    recordSet -> numRecord++;
                     r = recordSet -> recordData;
+                    /* 基本は追加用のフラッグを立てておく */
+                    AddFlag  addFlag = ADD;
+
+                    /*レコードセットの中を一つずつ見ていく*/
+                    while( r -> next != NULL){
+                        /* RecordDataとまったく同じレコードがすでに RecordSetの線形リストにあったら、そのRecordDataは追加しない */
+                        if (memcmp(&r, &recordData, sizeof(struct RecordData)) != 0) {
+                            /* 追加しないようフラッグを立てる */
+                            addFlag = NOT_ADD;
+                            break;
+                        }
+                        r = r -> next;
+                    }
+
+                    /* レコードを追加する必要がないため、処理を抜ける */
+                    if(addFlag == NOT_ADD){
+                        continue;
+                    }
+
                     /*レコードセットに一つもレコードがない場合は、*/
                     if( r == NULL)
                     {
                         recordSet -> recordData = recordData;
                         recordSet -> tail = recordData;                        
+                        /* レコードの数を追加 */
+                        recordSet -> numRecord++;
+
                     }else{
-                    
-                        /*レコードの最後を書き換える*/
-                        while( r -> next != NULL){
-                            r = r -> next;
-                        }
-                        r -> next = recordData;
-                        recordSet -> tail = r;       
+                        /* 末尾にデータを追加 */ 
+                        recordSet ->tail -> next = recordData;
+                        /* 追加したデータを末尾に登録 */
+                        recordSet -> tail = recordData;       
                     }
+
+                    /* レコードの数を増やす */
+                    recordSet -> numRecord++;
                 }
             }
         }
