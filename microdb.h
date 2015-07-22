@@ -149,6 +149,7 @@ struct Condition {
     int intValue;           /* integer型の場合の値 */
     char stringValue[MAX_STRING];   /* string型の場合の値 */
     int allmach; /* 条件文がない時(*で全表示されるとき)に１が入力される*/
+    distinctFlag distinct;      /* 重複除去フラグ */
 };
 
 /*
@@ -172,6 +173,12 @@ extern Result checkTokenString(char *);
 
 /* バッファリングテスト用関数  */
 extern void printBufferList();
+
+/*
+ * distinctFlag -- 重複除去フラグ
+ */
+typedef enum { NOT_DISTINCT = 0, DISTINCT = 1 } distinctFlag;
+
 
 
 

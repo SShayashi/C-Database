@@ -300,6 +300,7 @@ int main(int argc, char **argv)
     deleteFile(TEST_FILE1);
     deleteFile(TEST_FILE2);
 
+ 
     /* 空のファイルを2つ作り、オープンする */
     if (createFile(TEST_FILE1) != OK) {
 	fprintf(stderr, "Cannot create file.\n");
@@ -321,6 +322,7 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
+
     /*
      * ファイルの先頭から順に、(FILE_SIZE)ページ分のダミーデータを書く
      *
@@ -336,6 +338,9 @@ int main(int argc, char **argv)
      *   2ページ目: 102
      *   (以下同様)
      */
+
+    /* macだと以下が実行できない*/
+
     for (i = 0; i < FILE_SIZE; i++) {
 	/* ページに書く内容を用意する */
 	memset(page1, 0, PAGE_SIZE);
@@ -354,6 +359,7 @@ int main(int argc, char **argv)
 	    exit(1);
 	}
     }
+
 
     /* いったんファイルをクローズする */
     closeFile(file[0]);
