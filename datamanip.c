@@ -488,13 +488,13 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
 		  if(addFlag == NOT_ADD){
 		    continue;
 		  }
-		  if(addFlag =- ADD){
+		  if(addFlag == ADD){
 		    /* 末尾にデータを追加 */ 
 		    recordSet -> tail -> next = recordData;
 		    /* 追加したデータを末尾に登録 */
 		    recordSet -> tail = recordData;       
 		    /* レコードの数を増やす */
-                    recordSet -> numRecord++;
+            recordSet -> numRecord++;
 		  }
                 }
             }
