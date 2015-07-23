@@ -458,46 +458,44 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
                 }
                 
                 /*条件に合ったレコードを挿入する*/
-                if( checkCondition(recordData , condition) == OK)
-                {
-                    RecordData *r;
-                    r = recordSet -> recordData;
-                    /* 基本は追加用のフラッグを立てておく */
-                    AddFlag  addFlag = ADD;
-
-                    /*レコードセットの中を一つずつ見ていく*/
-                    while( r -> next != NULL){
-                        /* RecordDataとまったく同じレコードがすでに RecordSetの線形リストにあったら、そのRecordDataは追加しない */
-                        if (memcmp(&r, &recordData, sizeof(struct RecordData)) != 0) {
-                            /* 追加しないようフラッグを立てる */
-                            addFlag = NOT_ADD;
-                            break;
-                        }
-                        r = r -> next;
+                if( checkCondition(recordData , condition) == OK){
+		  RecordData *r;
+		  r = recordSet -> recordData;
+		  /* 基本は追加用のフラッグを立てておく */
+		  AddFlag  addFlag = ADD;
+		  
+		  /*レコードセットにまだ一つもレコードがない場合*/
+		  if( r == NULL){
+		      recordSet -> recordData = recordData;
+		      recordSet -> tail = recordData;                        
+		      /* レコードの数を追加 */
+		      recordSet -> numRecord++;
+		      continue;
                     }
 
-                    /* レコードを追加する必要がないため、処理を抜ける */
-                    if(addFlag == NOT_ADD){
-                        continue;
-                    }
-
-                    /*レコードセットに一つもレコードがない場合は、*/
-                    if( r == NULL)
-                    {
-                        recordSet -> recordData = recordData;
-                        recordSet -> tail = recordData;                        
-                        /* レコードの数を追加 */
-                        recordSet -> numRecord++;
-
-                    }else{
-                        /* 末尾にデータを追加 */ 
-                        recordSet -> tail -> next = recordData;
-                        /* 追加したデータを末尾に登録 */
-                        recordSet -> tail = recordData;       
-                    }
-
-                    /* レコードの数を増やす */
+		  /*レコードセットの中を一つずつ見ていく*/
+		  while( r -> next != NULL){
+		    /* RecordDataとまったく同じレコードがすでに RecordSetの線形リストにあったら、そのRecordDataは追加しない */
+		    if (memcmp(&r, &recordData, sizeof(struct RecordData)) == 0) {
+		      /* 追加しないようフラッグを立てる */
+		      addFlag = NOT_ADD;
+		      break;
+		    }
+		    r = r -> next;
+		  }
+		  
+		  /* レコードを追加する必要がないため、処理を抜ける */
+		  if(addFlag == NOT_ADD){
+		    continue;
+		  }
+		  if(addFlag =- ADD){
+		    /* 末尾にデータを追加 */ 
+		    recordSet -> tail -> next = recordData;
+		    /* 追加したデータを末尾に登録 */
+		    recordSet -> tail = recordData;       
+		    /* レコードの数を増やす */
                     recordSet -> numRecord++;
+		  }
                 }
             }
         }
