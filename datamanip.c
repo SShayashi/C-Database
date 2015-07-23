@@ -47,6 +47,60 @@ Result finalizeDataManipModule()
 }
 
 /*
+ * compareFieldData --渡されたフィールドが等しいかどうかを返す  
+ *   
+ * 引数；
+ *  x：FieldData型のデータ
+ *  y：FieldData型のデータ
+ *  返り値：
+ *  Result 
+ */
+static Result compareFieldData(FieldData *x , FieldData *y){
+    if( strcmp(x -> name ,y -> name) != 0 ){
+        return NG;
+    }
+
+    if( x -> dataType != y -> dataType){
+        return NG;
+    }
+
+    if( x -> intValue != y -> intValue){
+        return NG;
+    }
+
+    if( strcmp(x -> stringValue , y -> stringValue) != 0) {
+        return NG;
+    }
+    return OK;
+}
+
+
+/*
+ * compareRecordData --渡されたレコードが等しいかどうかを返す  
+ *   
+ * 引数；
+ *  x：RecordData型のデータ
+ *  y：RecordData型のデータ
+ *  返り値：
+ *   Result
+ */
+static Result compareRecordData(RecordData *x , RecordData *y){
+    
+    if( x -> numField != y -> numField){
+        return NG;
+    }
+
+    if( !compareFieldData(x -> fieldData , y -> fieldData)){
+        return NG;
+    }
+    
+    return OK;
+}
+
+
+
+
+/*
  * getRecordSize -- 1レコード分の保存に必要なバイト数の計算
  *
  * 引数:
@@ -465,25 +519,31 @@ RecordSet *selectRecord(char *tableName, Condition *condition)
 		  AddFlag  addFlag = ADD;
 		  
 		  /*レコードセットにまだ一つもレコードがない場合*/
-		  if( r == NULL){
+		  if( r == NULL)
+          {
 		      recordSet -> recordData = recordData;
 		      recordSet -> tail = recordData;                        
 		      /* レコードの数を追加 */
 		      recordSet -> numRecord++;
 		      continue;
-                    }
-
-		  /*レコードセットの中を一つずつ見ていく*/
-		  while( r -> next != NULL){
-		    /* RecordDataとまったく同じレコードがすでに RecordSetの線形リストにあったら、そのRecordDataは追加しない */
-		    if (memcmp(&r, &recordData, sizeof(struct RecordData)) == 0) {
-		      /* 追加しないようフラッグを立てる */
-		      addFlag = NOT_ADD;
-		      break;
-		    }
-		    r = r -> next;
-		  }
-		  
+            }
+            /* 重複削除宣言がされていた場合 */
+            if(condition->distinct == DISTINCT)
+            {
+              /*レコードセットの中を一つずつ見ていく*/
+              while( r -> next != NULL)
+              {
+                /* RecordDataとまったく同じレコードがすでに RecordSetの線形リストにあったら、そのRecordDataは追加しない */
+                if (compareRecordData(r , recordData) == OK)
+                {
+                  /* 追加しないようフラッグを立てる */
+                  addFlag = NOT_ADD;
+                  break;
+                }
+                r = r -> next;
+              }  
+            }
+    		  		  
 		  /* レコードを追加する必要がないため、処理を抜ける */
 		  if(addFlag == NOT_ADD){
 		    continue;
