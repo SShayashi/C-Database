@@ -802,7 +802,7 @@ void callDeleteRecord()
 Result checkTokenString(char *token){
 
 	char *p;
-	char a[] = "\'";
+	char *a = "\'";
 	p = token; 
 	if( strcmp(p , a) != 0 ){
 		printf("文字列ではありません\n");
