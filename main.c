@@ -415,6 +415,12 @@ void callInsertRecord()
          	recordData -> fieldData[numField].intValue = atoi(token);
             break;
         case TYPE_STRING:
+        if(checkTokenString(token) != OK){
+        	fprintf(stderr, "入力された書式に間違いがあります\n" );
+        }
+        if(removeSingeleQuote(token) != OK){
+        	fprintf(stderr, "エラーが発生しました\n");
+        }
             strcpy(recordData -> fieldData[numField].stringValue , token);
             break;
         default:
@@ -624,9 +630,11 @@ void callSelectRecord()
     		printf("条件式の指定に間違いがあります\n"); 
     		return;
     	}
-
-		/*'を取り除いた文字列を作成してcond.stringValueに入れる,-2は'の分！*/
-        strncpy(cond.stringValue, token + 1, strlen(token) - 2);
+    	/* シングルクォーテーションを取り除く */
+        if(removeSingeleQuote(token) != OK){
+        	fprintf(stderr, "エラーが発生しました\n");
+        }
+        strncpy(cond.stringValue, token, strlen(token) );
 
         // ......
         // (tokenの文字列を調べてcond.stringValueに適切な値を入れる)
@@ -769,12 +777,14 @@ void callDeleteRecord()
     	
     	/*データが''で囲まれているかの判定*/
     	if( checkTokenString(token) != OK){
-    		printf("条件式の指定に間違いがあります\n");
-    		return ;
+    		printf("条件式の指定に間違いがあります\n"); 
+    		return;
     	}
-
-		/*'を取り除いた文字列を作成してcond.stringValueに入れる,-2は'の分！*/
-        strncpy(cond.stringValue, token + 1, strlen(token) - 2);
+    	/* シングルクォーテーションを取り除く */
+        if(removeSingeleQuote(token) != OK){
+        	fprintf(stderr, "エラーが発生しました\n");
+        }
+        strncpy(cond.stringValue, token, strlen(token) );
 
 	    } else {
 		/* ここに来ることはないはず */
@@ -825,26 +835,29 @@ Result checkTokenString(char *token){
  * 返り値:
  *      Result
  */
-static Result removeSingleQuote(char *token){
+Result removeSingleQuote(char *token){
   char *p;
   char *a = "\'";
   char *q;
   p = token;
+
   if( *p != *a ){
     printf("文字列ではありません\n");
     return NG;
   }
   /* 先頭の文字'をNULL文字へ書き換える */
-  memset(p , \0,1 );
+  memset(p , '\0',1 );
+  
   if( strcmp(p + strlen(token) - 1, a) != 0 ){
     printf("文字列ではありません\n");
     return NG;
   }
   /* 末尾の'もNULL文字へ変換する */
-  memset(p , \0, 1);
+  memset(p , '\0', 1);
   token++;
-
+  return OK;
 }
+
 /*
  * main -- マイクロDBシステムのエントリポイント
  */
