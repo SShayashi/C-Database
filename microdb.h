@@ -173,8 +173,9 @@ extern void printTableData(char *);
 /* データを表にして表示する関数 */
 extern void printTableFence(int);
 
-/* データのString判定をする関数　（バグありTODO）*/
+/* データのString判定をする関数　*/
 extern Result checkTokenString(char *);
+extern Result removeSingleQuote(char *);
 
 /* バッファリングテスト用関数  */
 extern void printBufferList();
