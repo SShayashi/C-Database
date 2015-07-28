@@ -418,7 +418,7 @@ void callInsertRecord()
         if(checkTokenString(token) != OK){
         	fprintf(stderr, "入力された書式に間違いがあります\n" );
         }
-        if(removeSingeleQuote(token) != OK){
+        if( removeSingleQuote(token) != OK){
         	fprintf(stderr, "エラーが発生しました\n");
         }
             strcpy(recordData -> fieldData[numField].stringValue , token);
@@ -631,7 +631,7 @@ void callSelectRecord()
     		return;
     	}
     	/* シングルクォーテーションを取り除く */
-        if(removeSingeleQuote(token) != OK){
+        if( removeSingleQuote(token) != OK){
         	fprintf(stderr, "エラーが発生しました\n");
         }
         strncpy(cond.stringValue, token, strlen(token) );
@@ -781,7 +781,7 @@ void callDeleteRecord()
     		return;
     	}
     	/* シングルクォーテーションを取り除く */
-        if(removeSingeleQuote(token) != OK){
+        if( removeSingleQuote(token) != OK){
         	fprintf(stderr, "エラーが発生しました\n");
         }
         strncpy(cond.stringValue, token, strlen(token) );
@@ -828,7 +828,7 @@ Result checkTokenString(char *token){
 	return OK;
 }
 /**
- * removeSingeleQuote -- シングルクォーテーションで囲まれている文字列の
+ *  removeSingleQuote -- シングルクォーテーションで囲まれている文字列の
  *　シングルクォーテーションを取り除いた文字列を返す
  * 引数:
  *      token
