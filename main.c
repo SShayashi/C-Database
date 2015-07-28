@@ -21,6 +21,7 @@
 #define MAX_TYPE_NUM 20
 
 
+
 /*
  * inputString -- 字句解析中の文字列を収める配列
  *
@@ -804,7 +805,7 @@ Result checkTokenString(char *token){
 	char *p;
 	char *a = "\'";
 	p = token; 
-	if( strcmp(p , a) != 0 ){
+	if( *p != *a ){
 		printf("文字列ではありません\n");
 		return NG;
 	}
@@ -915,3 +916,5 @@ int main()
     finalizeDataDefModule();
     finalizeFileModule();
 }
+
+

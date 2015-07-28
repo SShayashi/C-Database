@@ -1,16 +1,14 @@
 main: main.o datadef.o file.o datamanip.o
 	cc -o main -g  main.o file.o datadef.o datamanip.o -lreadline -lcurses
-
-
 datadef.o:datadef.c
-	gcc -c datadef.c
+	cc -c -g datadef.c
 
 datamanip.o:datamanip.c
-	gcc -c datamanip.c 
+	cc -c -g datamanip.c 
 
 file.o:file.c
-	gcc -c file.c
+	cc -c -g file.c
 
 main.o:main.c
-	gcc -c main.c
+	cc -c -g main.c
 	
