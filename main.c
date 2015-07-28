@@ -21,6 +21,7 @@
 #define MAX_TYPE_NUM 20
 
 
+
 /*
  * inputString -- 字句解析中の文字列を収める配列
  *
@@ -804,7 +805,7 @@ Result checkTokenString(char *token){
 	char *p;
 	char *a = "\'";
 	p = token; 
-	if( strcmp(p , a) != 0 ){
+	if( *p != *a ){
 		printf("文字列ではありません\n");
 		return NG;
 	}
@@ -814,10 +815,36 @@ Result checkTokenString(char *token){
 		return NG;
 	}
 
-
 	return OK;
 }
+/**
+ * removeSingeleQuote -- シングルクォーテーションで囲まれている文字列の
+ *　シングルクォーテーションを取り除いた文字列を返す
+ * 引数:
+ *      token
+ * 返り値:
+ *      Result
+ */
+static Result removeSingleQuote(char *token){
+  char *p;
+  char *a = "\'";
+  char *q;
+  p = token;
+  if( *p != *a ){
+    printf("文字列ではありません\n");
+    return NG;
+  }
+  /* 先頭の文字'をNULL文字へ書き換える */
+  memset(p , \0,1 );
+  if( strcmp(p + strlen(token) - 1, a) != 0 ){
+    printf("文字列ではありません\n");
+    return NG;
+  }
+  /* 末尾の'もNULL文字へ変換する */
+  memset(p , \0, 1);
+  token++;
 
+}
 /*
  * main -- マイクロDBシステムのエントリポイント
  */
@@ -915,3 +942,5 @@ int main()
     finalizeDataDefModule();
     finalizeFileModule();
 }
+
+
