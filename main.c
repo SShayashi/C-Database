@@ -494,7 +494,7 @@ void callSelectRecord()
     char *tableName;
     TableInfo *tableInfo;
     Condition cond;
-    int i;
+    int i,len;
 
     /* selectの次のトークンを読み込み、それが"*"かどうかをチェック */
     token = getNextToken();
@@ -638,7 +638,9 @@ void callSelectRecord()
         if( removeSingleQuote(token) != OK){
         	fprintf(stderr, "エラーが発生しました\n");
         }
-        strncpy(cond.stringValue, token, strlen(token) );
+	token++;
+	len = strlen(token);
+        strncpy(cond.stringValue, token, len );
 
         // ......
         // (tokenの文字列を調べてcond.stringValueに適切な値を入れる)
@@ -676,7 +678,7 @@ void callDeleteRecord()
     char *tableName;
     TableInfo *tableInfo;
     Condition cond;
-    int i;
+    int i,len;
 
     
     /* deleteの次のトークンを読み込み、それが"from"かどうかをチェック */
@@ -804,7 +806,9 @@ void callDeleteRecord()
         if( removeSingleQuote(token) != OK){
         	fprintf(stderr, "エラーが発生しました\n");
         }
-        strncpy(cond.stringValue, token, strlen(token) );
+	token++;
+	len = strlen(token);
+        strncpy(cond.stringValue, token, len );
 
 	    } else {
 		/* ここに来ることはないはず */

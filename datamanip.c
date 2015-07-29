@@ -316,7 +316,9 @@ static Result checkCondition(RecordData *recordData, Condition *condition)
             if( recordData -> fieldData[i].dataType == TYPE_STRING)
             {
                 switch( condition -> operator){
-                case OPR_EQUAL : 
+                case OPR_EQUAL :
+		  printf("データ:%s\n", recordData->fieldData[i].stringValue);
+		  printf("比較：%s\n",condition -> stringValue);
                         if( strcmp(recordData -> fieldData[i].stringValue, condition -> stringValue) == 0  ){
 
                         }else{
