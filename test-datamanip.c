@@ -321,14 +321,25 @@ Result test3()
 {
     Condition condition;
 
-    /*
+    /*    /*
      * 以下の検索を実行
      * delete from TABLE_NAME where name != 'Mickey'
      */
+    /*
     strcpy(condition.name, "name");
     condition.dataType = TYPE_STRING;
     condition.operator = OPR_NOT_EQUAL;
     strcpy(condition.stringValue, "Mickey");
+    */
+
+     /*
+     * 以下の検索を実行
+     * delete from TABLE_NAME where age = 17
+     */
+    strcpy(condition.name, "age");
+    condition.dataType = TYPE_INTEGER;
+    condition.operator = OPR_EQUAL;
+    strcpy(condition.stringValue, "17");
 
     if (deleteRecord(TABLE_NAME, &condition) != OK) {
 	fprintf(stderr, "Cannot delete records.\n");

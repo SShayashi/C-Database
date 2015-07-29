@@ -648,13 +648,14 @@ Result deleteRecord(char *tableName, Condition *condition)
         /* 1ページ分のデータを読み込む */
         if (readPage(file, i, page) != OK) {
             /* エラー処理 */
+	  return NG;
         }
         /* pageの先頭からrecord_sizeバイトずつ切り取って処理する */
         for ( j = 0; j < (PAGE_SIZE / recordSize); j++) {
             RecordData *recordData;
                 char *p;
 
-                /* 先頭の「使用中」のフラグが0だったら読み飛ばす */
+            /* 先頭の「使用中」のフラグが0だったら読み飛ばす */
             p = &page[recordSize * j];
             if (*p == 0) {
                 continue;
@@ -663,15 +664,13 @@ Result deleteRecord(char *tableName, Condition *condition)
             /* RecordData構造体のためのメモリを確保する */
             if ((recordData = (RecordData *) malloc(sizeof(RecordData))) == NULL) {
                 /* エラー処理 */
+	      return NG;
             }
-
             /* フラグの分だけポインタを進める */
             p++;
-
-            
              /*１レコード分のデータを、RecordData構造体に入れる*/
-                recordData -> numField = tableInfo -> numField;
-                recordData -> next = NULL;
+	    recordData -> numField = tableInfo -> numField;
+	    recordData -> next = NULL;
             for ( k = 0; k < tableInfo->numField; k++) {
                 /* TableInfo構造体からRecordData構造体にフィールド名とデータ型の情報をコピーする */
                 /*フィールド情報*/
@@ -779,6 +778,10 @@ Result deleteDataFile(char *tableName)
 void printRecordSet(RecordSet *recordSet)
 {
     /*レコードデータが一つも挿入されてないとき*/
+  if(recordSet == NULL){
+    printf("テーブルがありません");
+    return ;
+ }
     if(recordSet -> numRecord == 0){
         printf("データがありません");
         return ;

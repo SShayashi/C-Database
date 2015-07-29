@@ -417,12 +417,16 @@ void callInsertRecord()
         case TYPE_STRING:
         if(checkTokenString(token) != OK){
         	fprintf(stderr, "入力された書式に間違いがあります\n" );
+		return;
         }
-        if( removeSingleQuote(token) != OK){
-        	fprintf(stderr, "エラーが発生しました\n");
-        }
-            strcpy(recordData -> fieldData[numField].stringValue , token);
-            break;
+        if( removeSingleQuote(token) != OK)
+	  {
+	    fprintf(stderr, "エラーが発生しました\n");
+	    return;
+	  }
+	token++;
+	strcpy(recordData -> fieldData[numField].stringValue , token);
+	break;
         default:
         /*ここには来ないはず*/
         printf("エラーが発生しました\n");
@@ -690,14 +694,30 @@ void callDeleteRecord()
 	return;
     }
 
+    /*テーブル名からテーブル情報を読み取る*/
     if( (tableInfo = getTableInfo(tableName)) == NULL){
     /*データエラー*/
-	printf("そのようなテーブル名はありません\n");
+	printf("そのようなテーブルはありません\n");
 	return;
     }
 
-    /* 次のトークンを読み込み、それが"where"かどうかをチェック */ 
+    /* 
+     * 次のトークンを読み込み、それが"where"かどうかをチェック
+	 * その後がNULLならレコードを全部削除
+     */
     token = getNextToken();
+   
+    if(token == NULL ){
+		/*条件なしのフラグを立てる*/
+		cond.allmach = 1;	
+		deleteRecord(tableName,&cond);
+		return ;
+	}
+
+
+
+    /* 次のトークンを読み込み、それが"where"かどうかをチェック */ 
+
     if (token == NULL || strcmp(token, "where") != 0) {
 	/* 文法エラー */
 	printf("入力行に間違いがあります。\n");
@@ -839,22 +859,23 @@ Result removeSingleQuote(char *token){
   char *p;
   char *a = "\'";
   char *q;
+  int len;
   p = token;
-
   if( *p != *a ){
     printf("文字列ではありません\n");
     return NG;
   }
   /* 先頭の文字'をNULL文字へ書き換える */
-  memset(p , '\0',1 );
-  
-  if( strcmp(p + strlen(token) - 1, a) != 0 ){
+  memset(token , '\0',1 );
+  p++;
+  token++;
+  len = strlen(token);
+  if( strcmp(p + len - 1, a) != 0 ){
     printf("文字列ではありません\n");
     return NG;
   }
   /* 末尾の'もNULL文字へ変換する */
-  memset(p , '\0', 1);
-  token++;
+  memset(p + len -1 , '\0', 1);
   return OK;
 }
 
