@@ -710,7 +710,10 @@ Result deleteRecord(char *tableName, Condition *condition)
             return NG;
         }
     }
-    printf("テーブルを削除しました");
+     if((closeFile(file)) != OK){
+        return NG;
+    }
+    //  printf("テーブルを削除しました");
     return OK;
 }
 
