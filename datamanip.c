@@ -317,8 +317,8 @@ static Result checkCondition(RecordData *recordData, Condition *condition)
             {
                 switch( condition -> operator){
                 case OPR_EQUAL :
-		  printf("データ:%s\n", recordData->fieldData[i].stringValue);
-		  printf("比較：%s\n",condition -> stringValue);
+		  //	  printf("データ:%s\n", recordData->fieldData[i].stringValue);
+		  // printf("比較：%s\n",condition -> stringValue);
                         if( strcmp(recordData -> fieldData[i].stringValue, condition -> stringValue) == 0  ){
 
                         }else{
