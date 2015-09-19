@@ -495,7 +495,8 @@ void callSelectRecord()
     TableInfo *tableInfo;
     Condition cond;
     int i,len;
-
+    //オールマッチを初期化（OSによっては最初に１が入ってしまう)
+    cond.allmach = 0 ;
     /* selectの次のトークンを読み込み、それが"*"かどうかをチェック */
     token = getNextToken();
 
@@ -679,8 +680,8 @@ void callDeleteRecord()
     TableInfo *tableInfo;
     Condition cond;
     int i,len;
-
-    
+    //conditionの初期化　OSによっては最初に１が入り、条件を指定してもすべて削除されてしまう
+    cond.allmach = 0 ;
     /* deleteの次のトークンを読み込み、それが"from"かどうかをチェック */
     token = getNextToken();
     if (token == NULL || strcmp(token, "from") != 0) {
