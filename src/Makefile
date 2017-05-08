@@ -1,5 +1,5 @@
 main: main.o datadef.o file.o datamanip.o microdb.h
-	cc -o ../bin/main -g  main.o file.o datadef.o datamanip.o -lreadline -lcurses
+	cc -o main -g  main.o file.o datadef.o datamanip.o -lreadline -lcurses
 datadef.o:datadef.c microdb.h
 	cc -c -g datadef.c
 
