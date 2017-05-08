@@ -1,31 +1,31 @@
-#C-MicroDatabase
+# C-MicroDatabase
 
 ## What is this?
 This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>Database.
 
-##Usage
+## Usage
 
-###build
+### build
 	cd ./src
 	make
 	./main
 
-###Create table
+### Create table
 	create table TABLE_NAME (COLUMN TYPE , ... COLUMN TYPE)
 
-###insert tuple
+### insert tuple
 	insert into TABLE_NAME values(VALUE, … VALUE)
 
-###select tuple
+### select tuple
 
 	select * from TABLE_NAME
 	select * from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-###delete tuple
+### delete tuple
 
 	delete from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-###drop table
+### drop table
 	drop table TABLE_NAME
 	
 ### Exit process
