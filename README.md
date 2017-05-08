@@ -1,39 +1,50 @@
-# product
-C言語で作ったまだまだ機能の少ないデータベースシステム
+#C-MicroDatabase
 
-##How to use
-データベースの実行まで
+## What is this?
+This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>Database.
 
-+ .ターミナルで「make 」を叩いてコンパイルしてください
-+ .実行ファイル「main」を実行してください
+##Usage
 
+###build
+	cd ./src
+	make
+	./main
 
-## データベースの機能
-*  テーブルの作成
-文法： create table “テーブル名” ( “フィールド名”　“intもしくはstring” , …)
-sql文の例： create table student (name string , age int)
-※現在レコードのデータ型は文字列と数値型しか実装されていません
+###Create table
+	create table TABLE_NAME (COLUMN TYPE , ... COLUMN TYPE)
 
-* .レコードの挿入
+###insert tuple
+	insert into TABLE_NAME values(VALUE, … VALUE)
 
-文法：insert into “テーブル名” values(“フィールド値”, … )
-sql文の例：insert into student (tanaka  29 , yamada 10)
+###select tuple
 
-* データベースの参照
-文法：select * from “テーブル名”　(where “フィールド名”　“条件式”　“値”)
-sql文の例：select * from student
-         select * from student where age > 10
+	select * from TABLE_NAME
+	select * from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-※条件式は　( > , < , = , != )の４つにしか対応していません
+###delete tuple
 
+	delete from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-* レコードの削除
-文法：delete from “テーブル名” where “条件式”
-sql文の例：delete from student where age > 10
+###drop table
+	drop table TABLE_NAME
+	
+### Exit process
+	exit
+	
 
-* テーブルの削除
-文法；drop table “テーブル名”
-sql文の例：drop table student
+## For example
+	
+	create table students (id int , name string ,age int)
+	insert into students values(1,"Tom",20)
+	insert into students values(2,"May",30)
+	select * from students where age > 10
+	delete from students where id = 1
+	drop table students
+	exit
+	
+## TODO
 
-5.データベースの終了
-quit, exit　で終了します。
+* Optimization
+* Cache data
+* The program is allow to type `select column1,column2,..., TABLE_NAME`.
+* Add some value types.For example `text,char,bool,time...`
