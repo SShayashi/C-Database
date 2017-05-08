@@ -46,5 +46,5 @@ This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>D
 
 * Optimization
 * Cache data
-* The program is allow to type `select column1,column2,..., TABLE_NAME`.
+* The program is allowed to type `select column1,column2,..., TABLE_NAME`.
 * Add some value types.For example `text,char,bool,time...`
