@@ -1,11 +1,11 @@
 # C-MicroDatabase
 
 ## What is this?
-This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>Database.
+This is a DatabaseSystem which has few features , so we call it  <em>Micro</em>Database.
 
 ## Usage
 
-### build
+### Build
 	cd ./src
 	make
 	./main
@@ -13,25 +13,24 @@ This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>D
 ### Create table
 	create table TABLE_NAME (COLUMN TYPE , ... COLUMN TYPE)
 
-### insert tuple
+### Insert tuple
 	insert into TABLE_NAME values(VALUE, … VALUE)
 
-### select tuple
+### Select tuple
 
 	select * from TABLE_NAME
 	select * from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-### delete tuple
+### Delete tuple
 
 	delete from TABLE_NAME where COLUMN (<,>,=,!=) VALUE
 
-### drop table
+### Drop table
 	drop table TABLE_NAME
 	
 ### Exit process
 	exit
 	
-
 ## For example
 	
 	create table students (id int , name string ,age int)
@@ -46,5 +45,5 @@ This is a DatabaseSystem which have few features ,So we call it  <em>Micro</em>D
 
 * Optimization
 * Cache data
-* The program is allowed to type `select column1,column2,..., TABLE_NAME`.
+* Allow system to have type `select column1,column2,..., TABLE_NAME`.
 * Add some value types.For example `text,char,bool,time...`
